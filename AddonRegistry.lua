@@ -14,35 +14,39 @@ end
 
 local AddonRegistry = APkg and APkg.tPackage or {}
 
-AddonRegistry.addons = Registry.addons or {}
+AddonRegistry.addons = AddonRegistry.addons or {}
 
-function AddonRegistry:RegisterAddon(tAddon, strContainer, strName)
+local function FormatKey(strContainer, strName)
 	if not strContainer then
-		error("AddonRegistry:RegisterAddon - strContainer is not defined")
+		error("AddonRegistry - strContainer is not defined")
 		return
-	elseif type(strContainer) ~= string then
-		error("AddonRegistry:RegisterAddon - strContainer is not a string")
+	elseif type(strContainer) ~= "string" then
+		error("AddonRegistry - strContainer is not a string")
 		return
 	end	
 
 	if not strName then
-		error("AddonRegistry:RegisterAddon - strName is not defined")
+		error("AddonRegistry - strName is not defined")
 		return
-	elseif type(strContainer) ~= string then
-		error("AddonRegistry:RegisterAddon - strName is not a string")
+	elseif type(strContainer) ~= "string" then
+		error("AddonRegistry - strName is not a string")
 		return		
 	end	
-	
-	
-	self.addons[string.format("%s:%s", strContainer, strName)] = tAddon
+
+	return string.format("%s:%s", strContainer, strName)
 end
 
-function AddonRegistry:GetAddon(strPackage, strContainer)
-	return self.addons[string.format("%s:%s", strContainer, strName)]
+function AddonRegistry:RegisterAddon(tAddon, strContainer, strName)
+	 
+	self.addons[FormatKey(strContainer, strName)] = tAddon
+end
+
+function AddonRegistry:GetAddon(strContainer, strName)
+	return self.addons[FormatKey(strContainer, strName)]
 end
 
 function AddonRegistry:GetAddons()
 	return self.addons
 end
 
-Apollo.RegisterPackage(Registry, MAJOR, MINOR, {})
+Apollo.RegisterPackage(AddonRegistry, MAJOR, MINOR, {})

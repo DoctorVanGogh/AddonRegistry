@@ -28,7 +28,7 @@ Apollo.RegisterAddon(self)
 ```
 to
 ```lua
-Apollo.RegisterAddon(self, nil, false, {"DoctorVanGogh:Lib:AddonRegistry"})
+Apollo.RegisterAddon(self, nil, nil, {"DoctorVanGogh:Lib:AddonRegistry"})
 ```
 ##### 4. Perform registry registration
 In each component addon's lua file, change (if necessary *add*) the `OnLoad` method and add this piece of code (preferably at the start):
@@ -38,7 +38,7 @@ AddonRegistry:RegisterAddon(self, "[ADDONPACKAGE]", "[COMPONENTADDON]")
 ```
 Substitute `[ADDONPACKAGE]` & `[COMPONENTADDON]` with the appropriate names. In our example this would be `Tradeskills` for `[ADDONPACKAGE]` and `TradeskillTree`(, `TradeskillSchematics`, ...) for `[COMPONENTADDON]` respectively.
 ##### 5. Setup clean depencendies/replacements 
-Change the Addon Properties to replace it's base version (here `Tradeskills`) and be nice and call the modified addon the same (`Tradeskills` too). That way any external dependency will still be able to look things up.
+Change the Addon Properties to replace it's base version (here `Tradeskills`) and be nice and call the modified addon something similar (`CRBTradeskills`). That way an external dependency will still be able to look things up if the author is aware of this naming scheme.
 
 
 
@@ -53,7 +53,7 @@ Add a `<Script Name="Lib/AddonRegistry.lua"/>` entry to FooAddon's `toc.xml` fil
 ##### 3. Setup dependencies
 In your FooAddon's call to `Apollo.RegisterAddon` be sure to include `"DoctorVanGogh:Lib:AddonRegistry"` *as well as* `Tradeskills` as dependencies:
 ```lua
-Apollo.RegisterAddon(self, "FooAddon", bHasConfiguration, {"DoctorVanGogh:Lib:AddonRegistry", "Tradeskills"})
+Apollo.RegisterAddon(self, "FooAddon", bHasConfiguration, {"DoctorVanGogh:Lib:AddonRegistry", "CRBTradeskills"})
 ```
 (Keep any other dependencies as needed)
 
@@ -75,7 +75,7 @@ Store an addon for later access in the registry
 * *strContainer* - Name for the Addon-package whose components you want to store
 * *strName* - Name for the component addon you want to store a reference to
 
-## GetAddon(strPackage, strContainer)
+## GetAddon(strContainer, strName)
 Get a reference to a stored addon from the registry
 
 * *strContainer* - Name for the Addon-package whose components you want to get
