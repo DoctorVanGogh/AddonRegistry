@@ -12,11 +12,11 @@ if APkg and (APkg.nVersion or 0) >= MINOR then
 	return -- no upgrade needed
 end
 
-local Registry = {
-	addons = {}
-}
+local AddonRegistry = APkg and APkg.tPackage or {}
 
-local function Registry:RegisterAddon(tAddon, strContainer, strName)
+AddonRegistry.addons = Registry.addons or {}
+
+function AddonRegistry:RegisterAddon(tAddon, strContainer, strName)
 	if not strContainer then
 		error("AddonRegistry:RegisterAddon - strContainer is not defined")
 		return
@@ -37,10 +37,12 @@ local function Registry:RegisterAddon(tAddon, strContainer, strName)
 	self.addons[string.format("%s:%s", strContainer, strName)] = tAddon
 end
 
-local function Registry:GetAddons()
+function AddonRegistry:GetAddon(strPackage, strContainer)
+	return self.addons[string.format("%s:%s", strContainer, strName)]
+end
+
+function AddonRegistry:GetAddons()
 	return self.addons
 end
 
-local registry = APkg and APkg.tPackage or Registry
-
-Apollo.RegisterPackage(registry, MAJOR, MINOR, {})
+Apollo.RegisterPackage(Registry, MAJOR, MINOR, {})
